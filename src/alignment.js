@@ -84,6 +84,16 @@ var alignWithDOM = function(nodeName, key, statics) {
 
 /** */
 module.exports = {
-  alignWithDOM: alignWithDOM
-};
+  alignWithDOM: alignWithDOM,
 
+  // WIP: for component api
+  getMatchingNode: function(nodeName, key) {
+    var walker = getWalker();
+    var currentNode = walker.currentNode;
+
+    // Check to see if we have a node to reuse
+    if(matches(currentNode, nodeName, key)) return currentNode;
+
+    return key && getChild(walker.getCurrentParent(), key);
+  }
+};

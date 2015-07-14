@@ -23,6 +23,18 @@ var traversal = require('./traversal'),
     nextSibling = traversal.nextSibling,
     parentNode = traversal.parentNode;
 
+var isTrackingRootElement = false;
+var rootElement;
+
+function trackRoot() {
+  isTrackingRootElement = true;
+  rootElement = null;
+}
+
+function getRoot() {
+  return rootElement;
+}
+
 
 /**
  * The offset in the virtual element declaration where the attributes are
@@ -196,6 +208,10 @@ var elementOpen = function(tag, key, statics, var_args) {
 
   var node = alignWithDOM(tag, key, statics);
 
+  if(isTrackingRootElement && !rootElement) {
+    rootElement = node;
+  }
+
   if (hasChangedAttrs.apply(node, arguments)) {
     var newAttrs = updateNewAttrs.apply(node, arguments);
     updateAttributes(node, newAttrs);
@@ -329,6 +345,9 @@ module.exports = {
   elementVoid: elementVoid,
   elementClose: elementClose,
   text: text,
-  attr: attr
-};
+  attr: attr,
 
+  // WIP: for component api
+  trackRoot: trackRoot,
+  getRoot: getRoot
+};
