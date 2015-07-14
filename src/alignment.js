@@ -92,7 +92,7 @@ module.exports = {
     var currentNode = walker.currentNode;
 
     // Check to see if we have a node to reuse
-    if(matches(currentNode, nodeName, key)) return currentNode;
+    if(currentNode && matches(currentNode, nodeName, key)) return currentNode;
 
     return key && getChild(walker.getCurrentParent(), key);
   }

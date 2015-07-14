@@ -102,6 +102,6 @@ var parentNode = function() {
 module.exports = {
   firstChild: firstChild,
   nextSibling: nextSibling,
-  parentNode: parentNode
+  parentNode: parentNode,
+  markVisited: markVisited
 };
-
