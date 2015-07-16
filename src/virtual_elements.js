@@ -23,19 +23,6 @@ var traversal = require('./traversal'),
     nextSibling = traversal.nextSibling,
     parentNode = traversal.parentNode;
 
-var isTrackingRootElement = false;
-var rootElement;
-
-function trackRoot() {
-  isTrackingRootElement = true;
-  rootElement = null;
-}
-
-function getRoot() {
-  return rootElement;
-}
-
-
 /**
  * The offset in the virtual element declaration where the attributes are
  * specified.
@@ -208,10 +195,6 @@ var elementOpen = function(tag, key, statics, var_args) {
 
   var node = alignWithDOM(tag, key, statics);
 
-  if(isTrackingRootElement && !rootElement) {
-    rootElement = node;
-  }
-
   if (hasChangedAttrs.apply(node, arguments)) {
     var newAttrs = updateNewAttrs.apply(node, arguments);
     updateAttributes(node, newAttrs);
@@ -288,7 +271,9 @@ var elementClose = function(tag) {
   }
 
   parentNode();
+  var node = getWalker().currentNode;
   nextSibling();
+  return node;
 };
 
 
@@ -311,7 +296,7 @@ var elementVoid = function(tag, key, statics, var_args) {
   }
 
   elementOpen.apply(null, arguments);
-  elementClose.apply(null, arguments);
+  return elementClose.apply(null, arguments);
 };
 
 
@@ -345,9 +330,5 @@ module.exports = {
   elementVoid: elementVoid,
   elementClose: elementClose,
   text: text,
-  attr: attr,
-
-  // WIP: for component api
-  trackRoot: trackRoot,
-  getRoot: getRoot
+  attr: attr
 };

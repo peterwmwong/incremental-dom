@@ -30,9 +30,6 @@ module.exports = {
   text: elements.text,
   attr: elements.attr,
 
-
-  elementTrackRoot: elements.trackRoot,
-  elementGetRoot: elements.getRoot,
   getMatchingNode: alignment.getMatchingNode,
   skipNextElement: traversal.nextSibling,
   markVisited: traversal.markVisited
